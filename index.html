@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f8fa">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lemari">
+  <meta name="description" content="Catat pakaian, pemakaian, cucian, dan inventaris secara offline.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./style.css">
+  <title>Lemari — Wardrobe Tracker</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">▦</span><span><strong>Lemari</strong><small>Wardrobe tracker</small></span></div>
+      <div class="header-actions"><span id="save-indicator" class="saved" aria-live="polite">Lokal • Offline-ready</span><button type="button" class="icon-btn" id="quick-add" aria-label="Tambah pakaian" title="Tambah pakaian">＋</button></div>
+    </header>
+    <main id="app" class="main-content" tabindex="-1"><div class="empty-state">Memuat lemari…</div></main>
+    <nav class="bottom-nav" aria-label="Navigasi utama">
+      <button data-tab="home" class="active"><span class="nav-icon">⌂</span><span>Beranda</span></button>
+      <button data-tab="items"><span class="nav-icon">▦</span><span>Koleksi</span></button>
+      <button data-tab="activity"><span class="nav-icon">◷</span><span>Riwayat</span></button>
+      <button data-tab="audit"><span class="nav-icon">☑</span><span>Cek ulang</span></button>
+      <button data-tab="settings"><span class="nav-icon">⚙</span><span>Pengaturan</span></button>
+    </nav>
+  </div>
+  <div id="modal-root"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
