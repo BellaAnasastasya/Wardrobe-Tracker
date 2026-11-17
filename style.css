@@ -38,7 +38,7 @@ html,body{max-width:100%;overflow-x:clip}
 #modal-root .field,#modal-root .field-row,#modal-root .checkbox-row,#modal-root .checkbox-row .content,#modal-root .form-footer{min-width:0;max-width:100%}
 #modal-root .field-row{grid-template-columns:repeat(2,minmax(0,1fr))}
 #modal-root .input{min-width:0;max-width:100%;font-size:16px}
-#modal-root input[type="date"]{width:100%;min-width:0;max-width:100%;display:block}
+#modal-root input[type="date"]{display:block;box-sizing:border-box;width:230px;max-width:100%;min-width:0;padding:8px 10px;font-size:16px;line-height:1.4}
 #modal-root .checkbox-row{width:100%;overflow:hidden}
 #modal-root .checkbox-row strong,#modal-root .checkbox-row small{overflow:hidden;text-overflow:ellipsis}
 #modal-root .checkbox-row .side{max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
