@@ -43,6 +43,21 @@ html,body{max-width:100%;overflow-x:clip}
 #modal-root .checkbox-row strong,#modal-root .checkbox-row small{overflow:hidden;text-overflow:ellipsis}
 #modal-root .checkbox-row .side{max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #modal-root .form-footer .button{min-width:0;font-size:12px;padding:9px 7px;white-space:nowrap}
+
+/* Sticky footer khusus modal Catat Pakaian */
+#modal-root .modal:has(#wear-items){padding-bottom:0}
+#modal-root .modal:has(#wear-items) .form-footer{
+  position:sticky;
+  bottom:0;
+  z-index:2;
+  display:flex;
+  gap:8px;
+  margin-top:14px;
+  margin-bottom:0;
+  padding:12px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  background:#fff;
+  border-top:1px solid var(--line);
+}
 #modal-root .button-row{max-width:100%}
 #modal-root .audit-item .details{min-width:0}
 
