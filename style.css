@@ -22,6 +22,7 @@ html,body{max-width:100%;overflow-x:clip}
 .recommendation-row{display:flex;align-items:center;gap:11px;min-width:0;padding:11px 0;border-bottom:1px solid var(--line)}
 .recommendation-row:last-child{border-bottom:0}
 .recommend-thumb{width:55px;height:61px;min-width:55px;flex-shrink:0;object-fit:cover;border-radius:9px;background:#edf0f2}
+.list-entry .mini-thumb,.audit-item .mini-thumb{display:block;width:48px!important;height:52px!important;min-width:48px!important;max-width:48px!important;max-height:52px!important;flex:0 0 48px!important;object-fit:cover;border-radius:8px;background:#edf0f2}
 .recommend-info{flex:1;min-width:0;overflow:hidden}
 .recommend-info strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .recommend-info small{display:block;color:var(--muted);font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
