@@ -18,6 +18,17 @@ html,body{max-width:100%;overflow-x:clip}
 .item-card .actions .button{font-size:11px;padding:6px 8px;min-height:31px;gap:4px}
 .item-card .actions .ui-icon{width:12px;height:12px}
 
+/* Notifikasi batas pakai dengan foto */
+.due-list{display:flex;flex-direction:column;margin-top:8px;min-width:0}
+.due-row{display:flex;align-items:center;gap:10px;min-width:0;padding:10px 0;border-bottom:1px solid #f1dfbb}
+.due-row:last-child{border-bottom:0;padding-bottom:0}
+.due-thumb{width:48px;height:52px;min-width:48px;flex:0 0 48px;object-fit:cover;border-radius:8px;background:#edf0f2}
+.due-info{flex:1;min-width:0}
+.due-info strong{display:block;font-size:13px;line-height:1.4;overflow-wrap:anywhere}
+.due-info small{display:block;font-size:11px;color:#987747;margin-top:4px;line-height:1.4}
+.due-button{flex-shrink:0;white-space:nowrap}
+.due-button .ui-icon{width:13px;height:13px}
+
 /* Rekomendasi dengan foto */
 .recommendation-row{display:flex;align-items:center;gap:11px;min-width:0;padding:11px 0;border-bottom:1px solid var(--line)}
 .recommendation-row:last-child{border-bottom:0}
@@ -64,6 +75,12 @@ html,body{max-width:100%;overflow-x:clip}
 
 /* Layar kecil */
 @media(max-width:380px){
+  .due-row{gap:7px}
+  .due-thumb{width:42px;height:46px;min-width:42px;flex:0 0 42px}
+  .due-info strong{font-size:12px}
+  .due-info small{font-size:10px}
+  .due-button{gap:4px}
+  .due-button .ui-icon{width:12px;height:12px}
   .recommendation-row{gap:7px}
   .recommend-thumb{width:45px;height:52px;min-width:45px}
   .recommend-button{padding:6px 8px;font-size:11px}
