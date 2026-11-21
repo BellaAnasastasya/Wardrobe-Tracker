@@ -19,7 +19,18 @@ function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show'
 function transact(mode,fn){return new Promise((resolve,reject)=>{const r=indexedDB.open('lemari-db',1);r.onupgradeneeded=()=>r.result.createObjectStore('data');r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result;const tx=db.transaction('data',mode);let req=fn(tx.objectStore('data'));req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);tx.oncomplete=()=>db.close();tx.onerror=()=>reject(tx.error)}})}
 let saveChain=Promise.resolve();
 function save(){const snapshot=structuredClone(state);$('#save-indicator').textContent='Menyimpan…';saveChain=saveChain.catch(()=>{}).then(()=>transact('readwrite',o=>o.put(snapshot,'wardrobe'))).then(()=>{$('#save-indicator').textContent='Tersimpan lokal'}).catch(e=>{console.error(e);toast('Gagal menyimpan. Cek penyimpanan perangkat.');$('#save-indicator').textContent='Gagal simpan'});return saveChain}
-function commit(msg){save();render();if(msg)toast(msg)}
+function commit(msg){
+  if(msg==='Outfit hari ini selesai. Rekomendasi kembali besok.'){
+    sessionStorage.setItem('lemari-outfit-notice-until',String(Date.now()+5000));
+    document.documentElement.classList.remove('outfit-message-hidden');
+    setTimeout(()=>{
+      document.documentElement.classList.add('outfit-message-hidden');
+    },5000);
+  }
+  save();
+  render();
+  if(msg)toast(msg);
+}
 function statusBadge(s){return `<span class="pill ${esc(s)}">${STATUSES[s]||'-'}</span>`}
 function limit(i){return Number(i.limit)||Number(state.settings.limits[i.category])||2}
 function count(i){return Number(i.wearsSinceWash)||0}
@@ -34,7 +45,15 @@ function icon(name){const paths={shirt:'<path d="m16 4 3 2 3 5-4 2-2-2v9H8v-9l-2
 function section(name,action=''){return `<div class="section-head"><h2>${name}</h2>${action}</div>`}
 // Pilihan rekomendasi adalah draft, baru dicatat saat outfit diselesaikan.
 function recommendationCandidates(category){return state.items.filter(i=>i.category===category&&i.status==='ready'&&count(i)<limit(i)&&!state.wears.some(w=>w.date===localDate()&&w.itemId===i.id)&&lastWorn(i)!==yesterday()).sort((a,b)=>{const da=lastWorn(a),db=lastWorn(b);return (da===null&&db!==null?-1:db===null&&da!==null?1:da&&db?da.localeCompare(db):0)||count(a)-count(b)||a.name.localeCompare(b.name,'id')})}
-function recommendationVisible(){return state.outfitCompletedDate!==localDate()}
+function recommendationVisible(){
+  if(state.outfitCompletedDate===localDate()){
+    const until=Number(sessionStorage.getItem('lemari-outfit-notice-until')||0);
+    document.documentElement.classList.toggle('outfit-message-hidden',Date.now()>=until);
+    return false;
+  }
+  document.documentElement.classList.remove('outfit-message-hidden');
+  return true;
+}
 function selectRecommendation(id){const i=state.items.find(x=>x.id===id);if(!i||!recommendationCandidates(i.category).some(x=>x.id===id))return toast('Pakaian ini sudah tidak tersedia.');if(recommendationSelected.has(id)){recommendationSelected.delete(id)}else{if(i.category==='CD / Pakaian dalam'){for(const selectedId of [...recommendationSelected])if(state.items.find(x=>x.id===selectedId)?.category===i.category)recommendationSelected.delete(selectedId)}recommendationSelected.add(id)}render()}
 function finishRecommendedOutfit(){const today=localDate();if(!recommendationVisible())return toast('Outfit hari ini sudah selesai.');const usedToday=state.wears.filter(w=>w.date===today).map(w=>w.category);const selected=[...recommendationSelected].map(id=>state.items.find(i=>i.id===id)).filter(Boolean);const available=state.items.filter(i=>i.status==='ready'&&count(i)<limit(i));const combined=[...usedToday,...selected.map(i=>i.category)];const required=[['CD / Pakaian dalam',c=>c==='CD / Pakaian dalam'],['baju (Kaos/Polo/Kemeja)',c=>TOP_CATS.has(c)],['celana (pendek/panjang/Jeans)',c=>BOTTOM_CATS.has(c)]];for(const [label,check] of required){if(available.some(i=>check(i.category))||usedToday.some(check)){if(!combined.some(check))return toast('Lengkapi pilihan '+label+' dulu.')}}if(!selected.length&&!usedToday.length)return toast('Pilih pakaian untuk outfit hari ini terlebih dahulu.');for(const i of selected){if(!recommendationCandidates(i.category).some(x=>x.id===i.id))return toast('Pilihan sudah berubah. Pilih ulang outfit.')}for(const i of selected){state.wears.push({id:uid(),itemId:i.id,itemName:i.name,category:i.category,date:today,createdAt:Date.now()});i.wearsSinceWash=count(i)+1}state.outfitCompletedDate=today;recommendationSelected.clear();commit('Outfit hari ini selesai. Rekomendasi kembali besok.')}
 document.addEventListener('click',e=>{const arrow=e.target.closest('[data-cd-step]');if(arrow){const candidates=recommendationCandidates('CD / Pakaian dalam');if(candidates.length){for(const id of [...recommendationSelected])if(state.items.find(i=>i.id===id)?.category==='CD / Pakaian dalam')recommendationSelected.delete(id);cdPosition=(cdPosition+Number(arrow.dataset.cdStep)+candidates.length)%candidates.length;render()}return}const pick=e.target.closest('[data-recommend-pick]');if(pick){selectRecommendation(pick.dataset.recommendPick);return}if(e.target.closest('[data-finish-outfit]'))finishRecommendedOutfit()});
