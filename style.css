@@ -108,6 +108,25 @@ html,body{max-width:100%;overflow-x:clip}
 .cd-picker small{margin:0;min-width:25px;text-align:center}
 .cd-arrow{display:grid;place-items:center;border:1px solid var(--line);background:var(--soft);color:var(--dark);width:31px;height:29px;border-radius:8px;font-size:22px;font-weight:700;line-height:1}
 .finish-outfit{margin-top:14px}
-.outfit-done{margin-top:12px}
+.outfit-done{
+  margin-top:12px;
+  overflow:hidden;
+  animation:outfitDoneHide 5s forwards;
+}
+@keyframes outfitDoneHide{
+  0%,99%{
+    opacity:1;
+    visibility:visible;
+    max-height:150px;
+  }
+  100%{
+    opacity:0;
+    visibility:hidden;
+    max-height:0;
+    margin:0;
+    padding:0;
+    border-width:0;
+  }
+}
 @media(max-width:550px){.due-line{gap:5px}.due-row{padding:6px;gap:4px}.due-row:last-child{padding-bottom:6px}.due-thumb{height:57px}.due-info strong{font-size:10px}.due-info small{font-size:9px}.due-button{font-size:9px!important;padding:5px 1px!important;min-height:29px;gap:1px}.due-button .ui-icon{width:11px;height:11px}.due-line[data-cols="1"] .due-row{padding:9px}.due-line[data-cols="1"] .due-button{font-size:11px!important}}
 @media(max-width:360px){.due-line{gap:3px}.due-row{padding:4px}.due-info strong{font-size:9px}.due-info small{font-size:8px}.due-thumb{height:47px}.due-button .ui-icon{display:none}}
